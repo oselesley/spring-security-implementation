@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
+
+// You can also use @ConfigurationProperties(prefix="jwt.properties")
 @Configuration
 @PropertySources({@PropertySource(value = "classpath:jwt.properties")})
 @ToString
