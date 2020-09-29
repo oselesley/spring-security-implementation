@@ -10,21 +10,20 @@ import org.springframework.web.bind.annotation.*;
 import com.springsecurity.demo.models.Student;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @Slf4j
 @RequestMapping("/api/v1/students")
 public class StudentManagementController {
-    private List<Student> students = new ArrayList<>(List.of(new Student(1L, "Kenechukwu Okafor"),
+    private List<Student> students = new ArrayList<>(Arrays.asList(new Student(1L, "Kenechukwu Okafor"),
             new Student(2L, "oBrien Longe")));
 
     @GetMapping(path = "/{studentid}")
 //    @PreAuthorize("hasAnyRole('ADMIN', 'ADMIN_TRAINEE')")
     public ResponseEntity<Student> getStudent(@PathVariable Long studentid) {
-        Student student = students.stream().filter(usr -> usr.getId().equals(studentid))
-                .findFirst()
-                .orElseThrow();
+        Student student = new Student(2L, "oBrien Longe");
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
