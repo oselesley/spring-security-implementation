@@ -30,13 +30,13 @@ import static com.springsecurity.demo.security.Role.*;
 @Configuration
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class Config extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private PasswordEncoder encoder;
     private DataSource dataSource;
     private UserService userService;
     private JWTRequestFilter jwtRequestFilter;
 
-    public Config(PasswordEncoder encoder, DataSource dataSource, UserService userService, JWTRequestFilter jwtRequestFilter) {
+    public SecurityConfiguration(PasswordEncoder encoder, DataSource dataSource, UserService userService, JWTRequestFilter jwtRequestFilter) {
         this.encoder = encoder;
         this.dataSource = dataSource;
         this.userService = userService;

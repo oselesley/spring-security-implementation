@@ -2,6 +2,7 @@ package com.springsecurity.demo.controllers;
 
 import com.springsecurity.demo.auth.AuthenticationRequest;
 import com.springsecurity.demo.auth.AuthenticationResponse;
+import com.springsecurity.demo.config.JWTConfig;
 import com.springsecurity.demo.utils.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,18 +24,21 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;
     private JWTUtil jwtTokenUtil;
+    private JWTConfig jwtConfig;
 
     public AuthController(AuthenticationManager authenticationManager,
                           UserDetailsService userDetailsService,
-                          JWTUtil jwtTokenUtil)
-    {
+                          JWTUtil jwtTokenUtil,
+                          JWTConfig jwtConfig) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.jwtConfig = jwtConfig;
     }
 
     @PostMapping("/")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest req) throws Exception {
+        log.info("jwt-config: " + jwtConfig.getJwtDataSource());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));

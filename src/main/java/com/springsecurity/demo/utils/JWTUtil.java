@@ -1,10 +1,12 @@
 package com.springsecurity.demo.utils;
 
+import com.springsecurity.demo.config.JWTConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,12 @@ import java.util.function.Function;
 @Service
 @Slf4j
 public class JWTUtil {
-    private String SECRET_KEY="secret";
+    private final String SECRET_KEY;
+    private JWTDataSource jwtDataSource;
+    public JWTUtil(@Autowired JWTConfig jwtConfig) {
+        this.jwtDataSource = jwtConfig.getJwtDataSource();
+        this.SECRET_KEY = jwtDataSource.getSecretKey();
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -47,7 +54,7 @@ public class JWTUtil {
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * jwtDataSource.getExpirationDate()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
